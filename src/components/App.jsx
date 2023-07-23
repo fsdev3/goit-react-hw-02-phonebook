@@ -6,10 +6,11 @@ export class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
-  handleChange = nameValue => {
-    this.setState({ name: nameValue });
-    // console.log(this.state);
+
+  handleChange = (name, value) => {
+    this.setState({ [name]: value });
   };
 
   createUser = data => {
@@ -19,15 +20,13 @@ export class App extends Component {
     };
 
     this.setState(prevState => ({
-      name: '',
       contacts: [...prevState.contacts, newUser],
+      name: '',
+      number: '',
     }));
-    console.log('newUser', newUser);
   };
 
   render() {
-    // console.log('array', this.state.contacts);
-
     return (
       <>
         <h1>Phonebook</h1>
@@ -40,7 +39,9 @@ export class App extends Component {
           <p>Contacts</p>
           <ul>
             {this.state.contacts.map(user => (
-              <li key={user.id}>{user.name}</li>
+              <li key={user.id}>
+                {user.name}: {user.number}
+              </li>
             ))}
           </ul>
         </div>
