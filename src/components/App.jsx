@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm';
 
 export class App extends Component {
@@ -6,37 +7,41 @@ export class App extends Component {
     contacts: [],
     name: '',
   };
+  handleChange = nameValue => {
+    this.setState({ name: nameValue });
+    // console.log(this.state);
+  };
 
   createUser = data => {
-    console.log(data);
-  };
+    const newUser = {
+      ...data,
+      id: nanoid(),
+    };
 
-  handleChange = ({ target }) => {
-    this.setState({ [target.name]: target.value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.createUser({ name: this.state.name });
+    this.setState(prevState => ({
+      name: '',
+      contacts: [...prevState.contacts, newUser],
+    }));
+    console.log('newUser', newUser);
   };
 
   render() {
-    const { name, contacts } = this.state;
+    // console.log('array', this.state.contacts);
+
     return (
       <>
         <h1>Phonebook</h1>
-
         <ContactForm
-          createUser={this.createUser}
+          state={this.state}
           handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-          name={name}
-          contacts={contacts}
+          createUser={this.createUser}
         />
         <div>
           <p>Contacts</p>
           <ul>
-            <li>{}</li>
+            {this.state.contacts.map(user => (
+              <li key={user.id}>{user.name}</li>
+            ))}
           </ul>
         </div>
       </>
