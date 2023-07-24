@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
 
 export class App extends Component {
   state = {
@@ -20,17 +21,51 @@ export class App extends Component {
     this.setState({ [name]: value });
   };
 
+  handleFind = (name, value) => {
+    this.setState({ [name]: value });
+    if (value.trim() === '') {
+      this.setState({
+        contacts: this.state.originalContacts || this.state.contacts,
+      });
+    } else {
+      if (!this.state.originalContacts) {
+        this.setState({ originalContacts: this.state.contacts });
+      }
+      const filteredContacts = this.state.contacts.filter(contact => {
+        const contactName = contact.name.toLowerCase();
+        const filterValue = value.toLowerCase();
+        return contactName.includes(filterValue);
+      });
+      this.setState({ contacts: filteredContacts });
+    }
+  };
+
   createUser = data => {
     const newUser = {
       ...data,
       id: nanoid(),
     };
+    const isNameExists = this.state.contacts.some(
+      contact => contact.name.toLowerCase() === newUser.name.toLowerCase()
+    );
+
+    if (isNameExists) {
+      alert(`${newUser.name} is already in contacts.`);
+      return;
+    }
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newUser],
       name: '',
       number: '',
     }));
+  };
+
+  handleDelete = id => {
+    const updatedContacts = this.state.contacts.filter(
+      contact => contact.id !== id
+    );
+    this.setState({ contacts: updatedContacts });
   };
 
   render() {
@@ -42,18 +77,10 @@ export class App extends Component {
           handleChange={this.handleChange}
           createUser={this.createUser}
         />
-        <Filter />
 
-        <div>
-          <p>Contacts</p>
-          <ul>
-            {this.state.contacts.map(user => (
-              <li key={user.id}>
-                {user.name}: {user.number}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <h2>Contacts</h2>
+        <Filter state={this.state} handleFind={this.handleFind} />
+        <ContactList state={this.state} handleDelete={this.handleDelete} />
       </>
     );
   }
