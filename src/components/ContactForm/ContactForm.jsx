@@ -8,9 +8,9 @@ export class ContactForm extends Component {
     number: '',
   };
 
-  inputChangeValue = evt => {
-    const newUsername = evt.target.value;
-    const key = evt.target.name;
+  inputChangeValue = e => {
+    const newUsername = e.target.value;
+    const key = e.target.name;
     return this.setState({ [key]: newUsername });
   };
 

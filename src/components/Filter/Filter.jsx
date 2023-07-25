@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { FilterDiv } from './Filter.styled';
+import PropTypes from 'prop-types';
 
 export class Filter extends Component {
   render() {

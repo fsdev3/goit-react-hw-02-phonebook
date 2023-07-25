@@ -22,13 +22,13 @@ export class App extends Component {
     });
   };
 
-  formSubmitHandler = user => {
+  submitHandler = user => {
     return this.setState(prevValue => ({
       contacts: [...prevValue.contacts, { id: nanoid(), ...user }],
     }));
   };
 
-  calculateFilteredContacts = () => {
+  filteredContacts = () => {
     const { contacts } = this.state;
     const filterValue = this.state.filter.toLowerCase();
     return contacts.filter(contact => {
@@ -36,12 +36,12 @@ export class App extends Component {
     });
   };
 
-  formSubmitSearchHandler = user => {
+  searchHandler = user => {
     const searchUser = this.state.contacts.find(
       contact => contact.name === user.name
     );
     if (!searchUser) {
-      this.formSubmitHandler(user);
+      this.submitHandler(user);
       return true;
     } else {
       alert(`${user.name} is already in contacts`);
@@ -56,11 +56,11 @@ export class App extends Component {
   };
 
   render() {
-    const visibleUsers = this.calculateFilteredContacts();
+    const visibleUsers = this.filteredContacts();
     return (
       <Container>
         <h1>Phonebook</h1>
-        <ContactForm onSubmitHandler={this.formSubmitSearchHandler} />
+        <ContactForm onSubmitHandler={this.searchHandler} />
         <h2>Contacts</h2>
         <Filter filter={this.state.filter} onChange={this.inputChangeValue} />
         <ContactList list={visibleUsers} onDeleteItem={this.deleteItem} />
