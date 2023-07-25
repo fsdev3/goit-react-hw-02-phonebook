@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
-
 import { Contact } from 'components/Contact/Contact';
+import PropTypes from 'prop-types';
 
 export function ContactList({ list, onDeleteItem }) {
   return list.map(item => {
@@ -8,7 +7,7 @@ export function ContactList({ list, onDeleteItem }) {
       <Contact
         key={item.id}
         contact={item}
-        onDelItem={() => onDeleteItem(item.id)}
+        onDelete={() => onDeleteItem(item.id)}
       />
     );
   });
