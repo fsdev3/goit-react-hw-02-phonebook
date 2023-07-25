@@ -1,20 +1,20 @@
-import { Component } from 'react';
-import { List } from './ContactList.styled';
+import PropTypes from 'prop-types';
 
-export class ContactList extends Component {
-  handleDelete = id => {
-    this.props.handleDelete(id);
-  };
-  render() {
+import { Contact } from 'components/Contact/Contact';
+
+export function ContactList({ list, onDeleteItem }) {
+  return list.map(item => {
     return (
-      <List>
-        {this.props.state.contacts.map(user => (
-          <li key={user.id}>
-            {user.name}: {user.number}
-            <button onClick={() => this.handleDelete(user.id)}>Delete</button>
-          </li>
-        ))}
-      </List>
+      <Contact
+        key={item.id}
+        contact={item}
+        onDelItem={() => onDeleteItem(item.id)}
+      />
     );
-  }
+  });
 }
+
+ContactList.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.object),
+  onDelItem: PropTypes.func,
+};

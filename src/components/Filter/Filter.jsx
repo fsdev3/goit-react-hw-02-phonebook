@@ -1,21 +1,26 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class Filter extends Component {
-  handleFind = ({ target }) => {
-    this.props.handleFind('filter', target.value);
-  };
-
   render() {
+    const { filter, onChange } = this.props;
     return (
       <div>
-        <label htmlFor="Filter">Find contact by name </label>
-        <input
-          type="text"
-          name="filter"
-          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          onChange={this.handleFind}
-        />
+        <label>
+          Find contact by Name
+          <input
+            type="text"
+            name="filter"
+            value={filter}
+            onChange={onChange}
+          ></input>
+        </label>
       </div>
     );
   }
 }
+
+Filter.propTypes = {
+  filter: PropTypes.string,
+  onChange: PropTypes.func,
+};

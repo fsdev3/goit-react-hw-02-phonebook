@@ -1,45 +1,59 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form } from './ContactForm.styled';
 
 export class ContactForm extends Component {
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.props.handleChange(name, value);
+  state = {
+    name: '',
+    number: '',
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.createUser({
-      name: this.props.state.name,
-      number: this.props.state.number,
-    });
+  inputChangeValue = evt => {
+    const newName = evt.target.value;
+    const key = evt.target.name;
+    return this.setState({ [key]: newName });
+  };
+
+  handleSubmit = evt => {
+    evt.preventDefault();
+    if (this.props.onSubmitHandler(this.state)) {
+      this.setState({ name: '', number: '' });
+    }
   };
 
   render() {
+    const { name, number } = this.state;
+
     return (
       <Form onSubmit={this.handleSubmit}>
-        <label htmlFor="Name">Name </label>
+        <label htmlFor="inputName">Name</label>
         <input
           type="text"
           name="name"
+          value={name}
+          id="inputName"
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          onChange={this.handleChange}
-          value={this.props.state.name}
           required
+          onChange={this.inputChangeValue}
         />
-        <label htmlFor="Number">Number </label>
+        <label htmlFor="inputNumber">Number</label>
         <input
           type="tel"
           name="number"
+          value={number}
+          id="inputNumber"
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          onChange={this.handleChange}
-          value={this.props.state.number}
           required
+          onChange={this.inputChangeValue}
         />
         <button type="submit">Add contact</button>
       </Form>
     );
   }
 }
+
+ContactForm.propTypes = {
+  onAlert: PropTypes.func,
+};
