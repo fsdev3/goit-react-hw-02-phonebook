@@ -30,17 +30,17 @@ export class App extends Component {
 
   calculateFilteredContacts = () => {
     const { contacts } = this.state;
-    const normalizedFilter = this.state.filter.toLowerCase();
+    const filterValue = this.state.filter.toLowerCase();
     return contacts.filter(contact => {
-      return contact.name.toLowerCase().includes(normalizedFilter, 0);
+      return contact.name.toLowerCase().includes(filterValue, 0);
     });
   };
 
   formSubmitSearchHandler = user => {
-    const searchResult = this.state.contacts.find(
+    const searchUser = this.state.contacts.find(
       contact => contact.name === user.name
     );
-    if (!searchResult) {
+    if (!searchUser) {
       this.formSubmitHandler(user);
       return true;
     } else {
@@ -56,14 +56,14 @@ export class App extends Component {
   };
 
   render() {
-    const visibleContacts = this.calculateFilteredContacts();
+    const visibleUsers = this.calculateFilteredContacts();
     return (
       <Container>
         <h1>Phonebook</h1>
         <ContactForm onSubmitHandler={this.formSubmitSearchHandler} />
         <h2>Contacts</h2>
         <Filter filter={this.state.filter} onChange={this.inputChangeValue} />
-        <ContactList list={visibleContacts} onDeleteItem={this.deleteItem} />
+        <ContactList list={visibleUsers} onDeleteItem={this.deleteItem} />
       </Container>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Form } from './ContactForm.styled';
+import PropTypes from 'prop-types';
 
 export class ContactForm extends Component {
   state = {
@@ -9,9 +9,9 @@ export class ContactForm extends Component {
   };
 
   inputChangeValue = evt => {
-    const newName = evt.target.value;
+    const newUsername = evt.target.value;
     const key = evt.target.name;
-    return this.setState({ [key]: newName });
+    return this.setState({ [key]: newUsername });
   };
 
   handleSubmit = evt => {
